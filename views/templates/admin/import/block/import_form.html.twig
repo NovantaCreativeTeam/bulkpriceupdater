@@ -1,0 +1,76 @@
+{{ form_start(importForm, {'attr': { 'data-file-upload-url': importFileUploadUrl, 'class': 'js-import-form' }}) }}
+
+<div class="row justify-content-center">
+    <div class="col-xl-12">
+        <div class="card">
+            <h3 class="card-header">
+                {{ 'Update product prices'|trans({}, 'Modules.Bulkpriceupdater.Admin') }}
+            </h3>
+            <div class="card-block row">
+                <div class="card-text">
+                    <div class="form-group row">
+                        <label class="form-control-label" for="input1">{{ importForm.file.vars.label }}</label>
+                        <div class="col-sm js-file-upload-input-wrapper">
+                            {{ form_errors(importForm.file) }}
+                            {{ form_widget(importForm.file, {'attr': {'class': 'js-import-file', 'data-max-file-upload-size': maxFileUploadSize }}) }}
+                        </div>
+
+                        <div class="col-sm">
+                            <div class="alert alert-danger d-none js-import-file-error" role="alert">
+                                <p class="alert-text">
+                                    <strong class="js-file-data"></strong>: <span class="js-error-message"></span>
+                                </p>
+                            </div>
+
+                            <div class="alert alert-success d-none js-import-file-alert" role="alert">
+                                <button type="button"
+                                        class="close btn btn-outline-secondary js-change-import-file-btn"
+                                        aria-label="{{ 'Change'|trans({}, 'Admin.Actions') }}">
+                                    <span aria-hidden="true"><i class="material-icons">edit</i></span>
+                                </button>
+                                <p class="alert-text js-import-file"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# <small class="form-text">{{ 'Allowed formats: .csv, .xls, .xlsx, .xlst, .ods, .ots'|trans({}, 'Admin.Advparameters.Help') }}</small>
+                    <small class="form-text">{{ 'Only UTF-8 and ISO 8859-1 encodings are allowed'|trans({}, 'Admin.Advparameters.Help') }}</small>
+                    <small class="form-text">{{ 'You can also upload your file via FTP to the following directory: %s .'|trans({'%s': importDirectory}, 'Admin.Advparameters.Help') }}</small> #}
+
+                    <div class="form-group row">
+                        <label class="form-control-label" for="input1">{{ importForm.skip.vars.label }}</label>
+                        <div class="col-sm">
+                            {{ form_errors(importForm.skip) }}
+                            {{ form_widget(importForm.skip) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="form-control-label" for="input1">{{ importForm.separator.vars.label }}</label>
+                        <div class="col-sm">
+                            {{ form_errors(importForm.separator) }}
+                            {{ form_widget(importForm.separator) }}
+                        </div>
+                    </div>
+
+                    {{ form_widget(importForm.entity) }}
+                    {{ form_widget(importForm.iso_lang) }}
+                    {{ form_widget(importForm.multiple_value_separator) }}
+                    {{ form_widget(importForm.truncate) }}
+                    {{ form_widget(importForm.regenerate) }}
+                    {{ form_widget(importForm.match_ref) }}
+                    {{ form_widget(importForm.forceIDs) }}
+                    {{ form_widget(importForm.sendemail) }}
+                    {{ form_widget(importForm.csv, {'attr': {'class': 'js-import-file-input'}}) }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary js-process-import" data-import_url="{{ import_url }}">{{ "Update Prices"|trans({}, 'Admin.Actions')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form_end(importForm)}}

@@ -1,0 +1,13 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+    {% include "@Modules/bulkpriceupdater/views/templates/admin/import/block/import_form.html.twig" %}
+    {% include "@Modules/bulkpriceupdater/views/templates/admin/import/block/import_modal.html.twig" %}
+
+    {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': priceImportLogGrid} %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('../modules/bulkpriceupdater/views/js/bulkpriceupdater.import.min.js') }}"></script>
+{% endblock %}

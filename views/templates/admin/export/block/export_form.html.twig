@@ -1,0 +1,45 @@
+{{ form_start(export_form) }}
+
+<div class="row justify-content-center">
+    <div class="col-xl-12">
+        <div class="card">
+            <h3 class="card-header">
+                {{ 'Generate export file'|trans({}, 'Modules.Bulkpriceupdater.Admin') }}
+            </h3>
+            <div class="card-block row">
+                <div class="card-text">
+                    <div class="form-group row">
+                        <label class="form-control-label" for="input1">{{ export_form.category_ids.vars.label }}</label>
+                        <div class="col-sm">
+                            {{ form_errors(export_form.category_ids) }}
+                            {{ form_widget(export_form.category_ids) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="form-control-label" for="input1">{{ export_form.supplier_ids.vars.label }}</label>
+                        <div class="col-sm">
+                            {{ form_errors(export_form.supplier_ids) }}
+                            {{ form_widget(export_form.supplier_ids) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="form-control-label" for="input1">{{ export_form.export_name.vars.label }}</label>
+                        <div class="col-sm">
+                            {{ form_errors(export_form.export_name) }}
+                            {{ form_widget(export_form.export_name) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary">{{ "Export"|trans({}, 'Admin.Actions')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form_end(export_form)}}

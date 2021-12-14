@@ -1,0 +1,56 @@
+admin_bulkpriceupdater_configure_index:
+  path: /bulkpriceupdater/configure
+  methods: ['GET', 'POST']
+  controller: Novanta\BulkPriceUpdater\Controller\Admin\Configure\ConfigureController::indexAction
+
+admin_bulkpriceupdater_export_index:
+  path: /bulkpriceupdater/export
+  methods: ['GET', 'POST']
+  defaults:
+    _controller: Novanta\BulkPriceUpdater\Controller\Admin\ExportController::indexAction
+    _legacy_controller: BulkPriceUpdaterExport
+    _legacy_link: BulkPriceUpdaterExport
+
+admin_bulkpriceupdater_import_index:
+  path: /bulkpriceupdater/import
+  methods: ['GET']
+  defaults:
+    _controller: Novanta\BulkPriceUpdater\Controller\Admin\ImportController::indexAction
+    _legacy_controller: BulkPriceUpdaterImport
+    _legacy_link: BulkPriceUpdaterImport
+
+admin_bulkpriceupdater_import_search:
+  path: /bulkpriceupdater/import
+  methods: POST
+  defaults:
+    _controller: 'Novanta\BulkPriceUpdater\Controller\Admin\ImportController::searchAction'
+    _legacy_controller: BulkPriceUpdaterImport
+    _legacy_link: BulkPriceUpdaterImport
+
+
+admin_bulkpriceupdater_import_process:
+  path: /bulkpriceupdater/import/process
+  methods: ['POST']
+  defaults:
+    _controller: Novanta\BulkPriceUpdater\Controller\Admin\ImportController::processImportAction
+
+admin_bulkpriceupdater_import_upload:
+  path: /bulkpriceupdater/import/upload
+  methods: ['POST']
+  defaults:
+    _controller: Novanta\BulkPriceUpdater\Controller\Admin\ImportController::uploadAction
+
+admin_bulkpriceupdater_import_revert:
+  path: /bulkpriceupdater/import/revert
+  methods: ['POST']
+  defaults:
+    _controller: Novanta\BulkPriceUpdater\Controller\Admin\ImportController::processRevertAction
+
+admin_bulkpriceupdater_import_download:
+  path: /bulkpriceupdater/import/download
+  methods: ['GET']
+  defaults:
+    _controller: Novanta\BulkPriceUpdater\Controller\Admin\ImportController::downloadAction
+
+
+

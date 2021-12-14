@@ -1,0 +1,10 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+    {% include "@Modules/bulkpriceupdater/views/templates/admin/export/block/export_form.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('../modules/bulkpriceupdater/views/js/bulkpriceupdater.export.min.js') }}"></script>
+{% endblock %}

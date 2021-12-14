@@ -1,0 +1,10 @@
+{% set class = 'btn btn-primary js-revert_import-row-action' %}
+
+<a class="{{ class }}" href="#" data-url="{{ path(action.options.route, { (action.options.route_param_name) : record[action.options.route_param_field]}) }}" 
+    data-confirm-message="{{ action.options.confirm_message }}" 
+    data-method="{{ action.options.method }}">
+	{% if action.icon is not empty %}
+		<i class="material-icons">{{ action.icon }}</i>
+	{% endif %}
+	{{ action.name }}
+</a>
