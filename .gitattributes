@@ -1,0 +1,3 @@
+_dev export-ignore
+composer.phar export-ignore
+composer.json export-ignore
