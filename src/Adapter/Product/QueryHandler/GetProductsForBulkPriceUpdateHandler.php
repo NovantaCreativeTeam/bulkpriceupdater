@@ -41,7 +41,7 @@ class GetProductsForBulkPriceUpdateHandler implements GetProductsForBulkPriceUpd
                 IFNULL(pa.id_product_attribute, '0') as id_product_attribute,
                 IF(pa.reference IS NULL OR pa.reference = '', p.reference, pa.reference) as reference,
                 pl.name,
-                IFNULL(GROUP_CONCAT(CONCAT(agl.public_name, ':', al.name)), '') as combination,
+                IFNULL(GROUP_CONCAT(DISTINCT CONCAT(agl.public_name, ':', al.name) ORDER BY ag.position), '') as combination,
                 ROUND(ROUND(p.price, 2) + ifnull(pa.price, 0), 2) as price")
             ->from($this->databasePrefix . 'product', 'p')
             ->innerJoin('p', $this->databasePrefix . 'product_lang', 'pl', 'p.id_product = pl.id_product and pl.id_lang = :idLang')
