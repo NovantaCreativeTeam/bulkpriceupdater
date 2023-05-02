@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="admin171bvum1b" source-language="it-IT" target-language="it-IT" datatype="plaintext">
+    <body>
+      <trans-unit id="51d176d24d652a36dda61b14665865ff">
+        <source>Bulk Price Updater</source>
+        <target>Aggiornamento Listini</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="a783ae9f09e343251660b725bf71a5fd">
+        <source>Add functionality to bulk update product prices</source>
+        <target>Aggiunge le funzionalità per aggiornare massivamente i prezzi</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="7b12b6e6a5a70831663090ac4dcf7789">
+        <source>Do you want to uninstall module?</source>
+        <target>Vuoi disistallare questo modulo?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="0095a9fa74d1713e43e370a7d7846224">
+        <source>Export</source>
+        <target>Esporta listino</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="72d6d7a1885885bb55a565fd1070581a">
+        <source>Import</source>
+        <target>Importa listino</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="af1b98adf7f686b84cd0b443e022b7a0">
+        <source>Categories</source>
+        <target>Categorie</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="1814d65a76028fdfbadab64a5a8076df">
+        <source>Suppliers</source>
+        <target>Fornitori</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="5b31c9a02606e2916b055fe461e2b2fd">
+        <source>Export only active</source>
+        <target>Esporta solo prodotti attivi</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="191dbda49b79497c815479800cebe397">
+        <source>Export Name</source>
+        <target>Nome dell'esportazione</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="8fd981ef8ecb61cdc23cd28193465410">
+        <source>Prices File</source>
+        <target>File del listino</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="f5e949a325ef1d6adb3e59127bff90bb">
+        <source>First Row Heading</source>
+        <target>Intestazione prima riga</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="9331ba9cad23c8a8d180914fdffbb984">
+        <source>Column separator</source>
+        <target>Separatore di colonna</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="85bc36d9d3c4dd997c0aa473dea94b2a">
+        <source>No products found for the specified filters, try another export</source>
+        <target>Nessun prodotto trovato per i filtri specificati, prova un'altra esportazione</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="92acb3c406a4502564c8e5bc67519cc4">
+        <source>Cart Exporter Configuration</source>
+        <target>Configurazione</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="d41dea21d97752ceff5bac08a2216b0a">
+        <source>Products Imported correctly</source>
+        <target>Prodotti importati correttamente</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="4bfc4a7632bae0877b798dbd9efc4f70">
+        <source>Import Products</source>
+        <target>Importa prodotti</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="f79f1eb9c29117e997163e3cc5c3e47e">
+        <source>Impossible to download the file, it doesn't exists</source>
+        <target>Impossibile scaricare il file, il file non esiste</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="734dac62bc272ea6b10337f8e1ab9c7e">
+        <source>Import Log</source>
+        <target>Log di importazione</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="cb7d61588c923ee33d442fee67484c13">
+        <source>Generate export file</source>
+        <target>Genera file di esportazione</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="8c48aac3a7760100fbdea62fb8308e8d">
+        <source>Update product prices</source>
+        <target>Aggiorna prezzi dei prodotti</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

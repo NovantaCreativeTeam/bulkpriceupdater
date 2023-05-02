@@ -129,7 +129,7 @@ class PriceImportHandler extends AbstractImportHandler {
                         $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name'), 
                         $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id_product_attribute')
                     ], 
-                    'Modules.Bulkpriceupdater..Notification'));
+                    'Modules.Bulkpriceupdater.Notification'));
                 throw new InvalidDataRowException();
             }
 
@@ -140,7 +140,7 @@ class PriceImportHandler extends AbstractImportHandler {
                     $combination->id_product,
                     $productId
                 ], 
-                'Modules.Bulkpriceupdater..Notification'));
+                'Modules.Bulkpriceupdater.Notification'));
                 throw new InvalidDataRowException();
             }
 
@@ -152,11 +152,11 @@ class PriceImportHandler extends AbstractImportHandler {
                     $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name'), 
                     $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id'),
                 ], 
-                'Modules.Bulkpriceupdater..Notification')); 
+                'Modules.Bulkpriceupdater.Notification')); 
                 throw new InvalidDataRowException();
             }
         } else {
-            $this->error($this->translator->trans('At least one of id or id_product_attribute must be specified for ', [], 'Modules.Bulkpriceupdater..Notification')); 
+            $this->error($this->translator->trans('At least one of id or id_product_attribute must be specified for ', [], 'Modules.Bulkpriceupdater.Notification')); 
             throw new SkippedIterationException();
         }
 

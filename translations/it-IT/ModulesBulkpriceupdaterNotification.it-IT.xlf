@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="admin171bvum1b" source-language="it-IT" target-language="it-IT" datatype="plaintext">
+    <body>
+      <trans-unit id="aefcc2833ca08c64e9178c238f5e4c95">
+        <source>Combination %1$s (ID: %2$s) cannot be saved: Combination do not exists</source>
+        <target>La combinazione %1$s (ID: %2$s) non può essere salvata: la combinazione non esiste</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="3c2bcfdfc231fe8391cdedb8c5fc2914">
+        <source>Combination %1$s (ID: %2$s) cannot be saved: Combination is linked to product with ID: (%3$s) and not with (%4$s)</source>
+        <target>La combinazione %1$s (ID: %2$s) non può essere salvata: la combinazione è collegata con il prodotto con ID: (%3$s) e non con (%4$s)</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="da85f9bdc8d4e94d2fcd10445f87f00d">
+        <source>%1$s (ID: %2$s) cannot be saved: Product doesn't exists</source>
+        <target>%1$s (ID: %2$s) non può essere salvato: il prodotto non esiste</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="2b2a713d88e459b3b74555d648704338">
+        <source>At least one of id or id_product_attribute must be specified for </source>
+        <target>Almeno uno tra id e id_product_attribute deve essere specificato</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="f041e558ad56489f82294efdcafd99ed">
+        <source>Impossible to read this file, revert aborted</source>
+        <target>Impossibile leggere il file, reimpostazione terminata</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="ba2b06e9ec8ecbee549ffaa1e32d9c82">
+        <source>Do you want to revert to this import?</source>
+        <target>Sei sicuro di voler reimpostare questa importazione?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="d85366190ecd2aebf8363980ad9d6740">
+        <source>Importing your data...</source>
+        <target>Importazione in corso...</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="6e17621d481059924339f91ed431a116">
+        <source>Validating data...</source>
+        <target>Validazione in corso...</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="650e0b1fd707ad8ad3a94e2eb494de3d">
+        <source>Ignore warnings and continue?</source>
+        <target>Ignorare gli avvisi e continuare?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="b8388ec68dcac2402d944fbb3382b0f1">
+        <source>Abort import</source>
+        <target>Stoppa importazione</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
