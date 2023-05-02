@@ -31,6 +31,7 @@ class ExportController extends FrameworkBundleAdminController {
             $filters = [
                 'id_supplier' => $form_data['supplier_ids'],
                 'id_category' => $form_data['category_ids'],
+                'only_active' => $form_data['only_active']
             ];
 
             $productQuery = new GetProductsForBulkPriceUpdate($filters);

@@ -70,7 +70,7 @@ class ImportController extends FrameworkBundleAdminController
      * Viene invocata tramite Js
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function uploadAction(Request $request)
     {
@@ -101,7 +101,7 @@ class ImportController extends FrameworkBundleAdminController
      * Viene invocata tramite Ajax
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function processImportAction(Request $request)
     {
@@ -145,7 +145,7 @@ class ImportController extends FrameworkBundleAdminController
      * Funzione che effettua il revert di una importazione
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function processRevertAction(Request $request)
     {
@@ -220,7 +220,7 @@ class ImportController extends FrameworkBundleAdminController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function searchAction(Request $request)
     {
@@ -238,7 +238,7 @@ class ImportController extends FrameworkBundleAdminController
      * Funzione che effettua il download del file di importazione di un log
      *
      * @param Request $request
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function downloadAction(Request $request)
     {

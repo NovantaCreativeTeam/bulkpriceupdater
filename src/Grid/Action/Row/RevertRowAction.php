@@ -24,6 +24,7 @@ class RevertRowAction extends AbstractRowAction {
                 'method' => 'POST',
                 'confirm_message' => '',
                 'accessibility_checker' => null,
+                'use_inline_display' => true
             ])
             ->setAllowedTypes('route', 'string')
             ->setAllowedTypes('route_param_name', 'string')

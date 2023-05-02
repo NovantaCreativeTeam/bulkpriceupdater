@@ -6,6 +6,7 @@ use Novanta\BulkPriceUpdater\Form\ChoiceProvider\SupplierByIdChoiceProvider;
 use PrestaShop\PrestaShop\Adapter\Category\CategoryDataProvider;
 use PrestaShopBundle\Form\Admin\Type\CategoryChoiceTreeType;
 use PrestaShopBundle\Form\Admin\Type\Material\MaterialChoiceTableType;
+use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,6 +42,14 @@ class ExportType extends AbstractType {
         $builder->add('supplier_ids', MaterialChoiceTableType::class, [
             'label' => $this->translator->trans('Suppliers', [], 'Modules.Bulkpriceupdater.Admin'),
             'choices' => $this->supplierChoiceProvider->getChoices()
+        ]);
+
+        $builder->add('only_active', SwitchType::class, [
+            'label' => $this->translator->trans('Export only active', [], 'Modules.Bulkpriceupdater.Admin'),
+            'choices' => [
+                'No' => "0",
+                'Yes' => "1",
+            ],
         ]);
 
         $builder->add('export_name', TextType::class, [

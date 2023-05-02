@@ -62,7 +62,10 @@ class GetProductsForBulkPriceUpdateHandler implements GetProductsForBulkPriceUpd
         if(\array_key_exists('id_category', $filters) && !empty($filters['id_category'])) {
             $queryBuilder->andWhere($queryBuilder->expr()->in('cp.id_category', $filters['id_category']));
         }
-            
+
+        if(\array_key_exists('only_active', $filters) && $filters['only_active']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('p.active', 1));
+        }
 
         $queryBuilder->setParameter('idLang', $language_id);
 

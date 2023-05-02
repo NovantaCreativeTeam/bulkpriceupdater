@@ -122,7 +122,7 @@ final class PriceImportLogDefinitionFactory extends AbstractGridDefinitionFactor
             ->add(
                 (new RevertRowAction('revert'))
                     ->setName($this->trans('Revert', [], 'Admin.Actions'))
-                    ->setIcon('upload')
+                    ->setIcon('autorenew')
                     ->setOptions([
                         'route' => 'admin_bulkpriceupdater_import_revert',
                         'route_param_name' => 'id',

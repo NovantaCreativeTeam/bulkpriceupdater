@@ -25,6 +25,14 @@
                     </div>
 
                     <div class="form-group row">
+                        <label class="form-control-label" for="input1">{{ export_form.only_active.vars.label }}</label>
+                        <div class="col-sm">
+                            {{ form_errors(export_form.only_active) }}
+                            {{ form_widget(export_form.only_active) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="form-control-label" for="input1">{{ export_form.export_name.vars.label }}</label>
                         <div class="col-sm">
                             {{ form_errors(export_form.export_name) }}
