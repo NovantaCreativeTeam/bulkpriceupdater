@@ -52,6 +52,8 @@ services:
       - '@prestashop.adapter.legacy.configuration'
       - '@prestashop.adapter.validate'
       - '@doctrine.orm.entity_manager'
+      - '@prestashop.adapter.product.repository.product_repository'
+      - '@prestashop.adapter.product.combination.repository.combination_repository'
 
 
   # Grid Price Import Log

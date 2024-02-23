@@ -3,17 +3,30 @@
 namespace Novanta\BulkPriceUpdater\Adapter\Import\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Matrix\Exception;
 use Novanta\BulkPriceUpdater\Entity\PriceImportLog;
 use NumberFormatter;
 use ObjectModel;
 use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Adapter\Database;
 use PrestaShop\PrestaShop\Adapter\Entity\Combination;
+use PrestaShop\PrestaShop\Adapter\Entity\Db;
+use PrestaShop\PrestaShop\Adapter\Entity\PrestaShopException;
 use PrestaShop\PrestaShop\Adapter\Entity\Product;
 use PrestaShop\PrestaShop\Adapter\Import\Handler\AbstractImportHandler;
 use PrestaShop\PrestaShop\Adapter\Import\ImportDataFormatter;
+use PrestaShop\PrestaShop\Adapter\Product\Combination\Repository\CombinationRepository;
+use PrestaShop\PrestaShop\Adapter\Product\Repository\ProductRepository;
 use PrestaShop\PrestaShop\Adapter\Validate;
 use PrestaShop\PrestaShop\Core\Cache\Clearer\CacheClearerInterface;
+use PrestaShop\PrestaShop\Core\Domain\Product\Combination\Exception\CannotUpdateCombinationException;
+use PrestaShop\PrestaShop\Core\Domain\Product\Combination\Exception\CombinationNotFoundException;
+use PrestaShop\PrestaShop\Core\Domain\Product\Combination\ValueObject\CombinationId;
+use PrestaShop\PrestaShop\Core\Domain\Product\Exception\CannotUpdateProductException;
+use PrestaShop\PrestaShop\Core\Domain\Product\Exception\ProductConstraintException;
+use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductId;
+use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductType;
+use PrestaShop\PrestaShop\Core\Exception\CoreException;
 use PrestaShop\PrestaShop\Core\Import\Configuration\ImportConfigInterface;
 use PrestaShop\PrestaShop\Core\Import\Configuration\ImportRuntimeConfigInterface;
 use PrestaShop\PrestaShop\Core\Import\Exception\InvalidDataRowException;
@@ -25,6 +38,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 class PriceImportHandler extends AbstractImportHandler {
     
     protected $entityManager;
+    protected $productRepository;
+    protected $combinationRepository;
+    private array $productsToRealign;
 
     public function __construct(
         ImportDataFormatter $dataFormatter,
@@ -40,7 +56,9 @@ class PriceImportHandler extends AbstractImportHandler {
         CacheClearerInterface $cacheClearer,
         Configuration $configuration,
         Validate $validate,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ProductRepository $productRepository,
+        CombinationRepository $combinationRepository
     )
     {
         parent::__construct(
@@ -60,6 +78,9 @@ class PriceImportHandler extends AbstractImportHandler {
         );
 
         $this->entityManager = $entityManager;
+        $this->productRepository = $productRepository;
+        $this->combinationRepository = $combinationRepository;
+        $this->productsToRealign = [];
     }
     
     public function importRow(
@@ -95,6 +116,11 @@ class PriceImportHandler extends AbstractImportHandler {
 
             if($isValid && !$runtimeConfig->shouldValidateData()) {
                 $entity->update();
+                if(is_a($entity, Product::class) && $entity->product_type == ProductType::TYPE_COMBINATIONS && !in_array($entity->id, $this->productsToRealign)) {
+                    $this->productsToRealign[] = $entity->id;
+                } else if (is_a($entity, Combination::class) && !in_array($entity->id_product, $this->productsToRealign)) {
+                    $this->productsToRealign[] = $entity->id_product;
+                }
             } else if (!$isValid) {
                 $error = true !== $fieldsError ? $fieldsError : '';
                 $error .= true !== $langFieldsError ? $langFieldsError : '';
@@ -208,9 +234,9 @@ class PriceImportHandler extends AbstractImportHandler {
     public function tearDown(ImportConfigInterface $importConfig, ImportRuntimeConfigInterface $runtimeConfig)
     {
         //parent::tearDown($importConfig, $runtimeConfig);
-
         if ($runtimeConfig->isFinished() && !$runtimeConfig->shouldValidateData()) {
             $this->addPriceImportLog($importConfig);
+            $this->realignProductPrices($this->productsToRealign);
         }
     }
 
@@ -240,7 +266,47 @@ class PriceImportHandler extends AbstractImportHandler {
         $this->entityManager->persist($import);
         $this->entityManager->flush();
     }
-    
+
+
+    /**
+     * Function that realign base price according to combinations
+     * Combination with the lowest price should be 0
+     * @param array $productsToRealing
+     * @return void
+     */
+    private function realignProductPrices(array $productsToRealing): void
+    {
+        foreach ($productsToRealing as $productId) {
+            // 1. Get the lowest combinations
+            $qb = $this->entityManager->getConnection()->createQueryBuilder();
+            $qb
+                ->select('pa.id_product_attribute, pa.price')
+                ->from(_DB_PREFIX_ . 'product_attribute', 'pa')
+                ->where('pa.id_product = :productId')
+                ->setParameter('productId', $productId);
+
+            $combinations = $qb->execute()->fetchAll();
+            $cheapCombination = $combinations[array_search(min($prices = array_column($combinations, 'price')), $prices)];
+
+            try {
+                // 2. Increase the product price of (combination_price - product_price)
+                $productToRealign = $this->productRepository->get(new ProductId((int) $productId));
+                $priceDifference = (float) $cheapCombination['price'];
+                $productToRealign->price = $productToRealign->price + $priceDifference;
+                $this->productRepository->partialUpdate($productToRealign, ['price'], CannotUpdateProductException::FAILED_UPDATE_PRICES);
+
+                // 3. Decrease the combination price of (combination_price - product_price)
+                foreach ($combinations as $combination) {
+                    $combinationToRealign = $this->combinationRepository->get(new CombinationId((int)$combination['id_product_attribute']));
+                    $combinationToRealign->price = $combinationToRealign->price - $priceDifference;
+                    $this->combinationRepository->partialUpdate($combinationToRealign, ['price'], CannotUpdateCombinationException::FAILED_UPDATE_PRICES);
+                }
+            }
+            catch (\Exception $e) {
+                $this->error($this->translator->trans('Unable to realign prices for product %s: %s. Please revert import or re-run import', [$productId, $e->getMessage()], 'Modules.Bulkpriceupdater.Notification'));
+            }
+        }
+    }
     /**
      * Undocumented function
      *
