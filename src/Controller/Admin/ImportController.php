@@ -1,4 +1,22 @@
 <?php
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
 
 namespace Novanta\BulkPriceUpdater\Controller\Admin;
 
@@ -7,7 +25,6 @@ use Novanta\BulkPriceUpdater\Entity\PriceImportLog;
 use Novanta\BulkPriceUpdater\Form\Admin\Import\ImportType;
 use Novanta\BulkPriceUpdater\Grid\Definition\Factory\PriceImportLogDefinitionFactory;
 use Novanta\BulkPriceUpdater\Search\Filters\PriceImportLogFilters;
-use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShop\PrestaShop\Core\Import\Configuration\ImportConfig;
 use PrestaShop\PrestaShop\Core\Import\Exception\ImportException;
 use PrestaShop\PrestaShop\Core\Import\Exception\UnavailableImportFileException;
@@ -24,7 +41,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ImportController extends FrameworkBundleAdminController
 {
-
     public function indexAction(Request $request, PriceImportLogFilters $filters)
     {
         /**
@@ -38,8 +54,8 @@ class ImportController extends FrameworkBundleAdminController
             $this->getImportDefaults(),
             [
                 'attr' => [
-                    'id' => 'import-prices-form'
-                ]
+                    'id' => 'import-prices-form',
+                ],
             ]
         );
 
@@ -57,7 +73,7 @@ class ImportController extends FrameworkBundleAdminController
             [
                 'layoutTitle' => $this->trans('Import Products', 'Modules.Bulkpriceupdater.Admin'),
                 'importForm' => $importForm->createView(),
-                'import_url'  => $this->generateUrl('admin_bulkpriceupdater_import_process'),
+                'import_url' => $this->generateUrl('admin_bulkpriceupdater_import_process'),
                 'importFileUploadUrl' => $this->generateUrl('admin_bulkpriceupdater_import_upload'),
                 'maxFileUploadSize' => $this->get('prestashop.core.configuration.ini_configuration')->getPostMaxSizeInBytes(),
                 'priceImportLogGrid' => $this->presentGrid($priceImportLogGrid),
@@ -70,6 +86,7 @@ class ImportController extends FrameworkBundleAdminController
      * Viene invocata tramite Js
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function uploadAction(Request $request)
@@ -101,6 +118,7 @@ class ImportController extends FrameworkBundleAdminController
      * Viene invocata tramite Ajax
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function processImportAction(Request $request)
@@ -127,7 +145,7 @@ class ImportController extends FrameworkBundleAdminController
         $runtimeConfigFactory = $this->get('prestashop.core.import.runtime_config_factory');
 
         // Setto il mapping del csv manualmente, il file deve avere questi campi
-        $request->request->set('type_value', array('id', 'id_product_attribute', 'reference', 'name', 'combination', 'no', 'price_tex'));
+        $request->request->set('type_value', ['id', 'id_product_attribute', 'reference', 'name', 'combination', 'no', 'price_tex']);
 
         $importConfig = $importConfigFactory->buildFromRequest($request);
         $runtimeConfig = $runtimeConfigFactory->buildFromRequest($request);
@@ -145,6 +163,7 @@ class ImportController extends FrameworkBundleAdminController
      * Funzione che effettua il revert di una importazione
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function processRevertAction(Request $request)
@@ -169,7 +188,7 @@ class ImportController extends FrameworkBundleAdminController
 
         // Costruisco la richiesta di importazione sulla base del log e dei dati di runtime
         $defaults = $this->getImportDefaults();
-        $request->request->set('type_value', array('id', 'id_product_attribute', 'reference', 'name', 'combination', 'price_tex', 'no'));
+        $request->request->set('type_value', ['id', 'id_product_attribute', 'reference', 'name', 'combination', 'price_tex', 'no']);
 
         $importer = $this->get('prestashop.core.import.importer');
         $runtimeConfigFactory = $this->get('prestashop.core.import.runtime_config_factory');
@@ -197,22 +216,23 @@ class ImportController extends FrameworkBundleAdminController
                 $runtimeConfig,
                 $this->get('novanta.bulkpriceupdater.adapter.import.handler.price')
             );
-    
+
             return $this->json($runtimeConfig->toArray());
         } catch (UnreadableFileException $e) {
             $errors[] = $this->trans('Impossible to read this file, revert aborted', 'Modules.Bulkpriceupdater.Notification');
+
             return $this->json([
                 'errors' => $errors,
                 'isFinished' => true,
             ]);
         } catch (ImportException $e) {
             $errors[] = $this->trans('Impossible to revert:' . $e->getMessage(), 'Modules.Bulkpriceupdater.Notification');
+
             return $this->json([
                 'errors' => $errors,
                 'isFinished' => true,
             ]);
         }
-        
     }
 
     /**
@@ -238,6 +258,7 @@ class ImportController extends FrameworkBundleAdminController
      * Funzione che effettua il download del file di importazione di un log
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function downloadAction(Request $request)
@@ -253,13 +274,14 @@ class ImportController extends FrameworkBundleAdminController
 
         try {
             $file = new File($importDir->getDir() . $log->getFile());
+
             return $this->file($file);
         } catch (FileNotFoundException $e) {
             $this->addFlash('error', $this->trans('Impossible to download the file, it doesn\'t exists', 'Modules.Bulkpriceupdater.Admin'));
+
             return $this->redirectToRoute('admin_bulkpriceupdater_import_index');
         }
     }
-
 
     /**
      * Funzione che ritorna i valori di Default per la ImportConfig
@@ -279,7 +301,7 @@ class ImportController extends FrameworkBundleAdminController
             'separator' => ImportSettings::DEFAULT_SEPARATOR,
             'iso_lang' => 'it',
             'entity' => 1,
-            'price_tin' => false
+            'price_tin' => false,
         ];
     }
 }

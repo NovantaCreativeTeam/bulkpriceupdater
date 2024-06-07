@@ -3,5 +3,14 @@
         "psr-4": {
             "Novanta\\BulkPriceUpdater\\": "src/"
         }
-    }
+    },
+    "require-dev": {
+        "prestashop/php-dev-tools": "^5.0",
+        "friendsofphp/php-cs-fixer": "^3.58",
+        "prestashop/header-stamp": "^2.3",
+        "prestashop/autoindex": "^2.1",
+        "squizlabs/php_codesniffer": "^3.10"
+    },
+    "author": "PrestaShop",
+    "license": "AFL-3.0"
 }

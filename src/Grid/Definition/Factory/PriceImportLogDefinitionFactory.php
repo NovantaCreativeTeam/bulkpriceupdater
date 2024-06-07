@@ -1,4 +1,22 @@
 <?php
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
 
 namespace Novanta\BulkPriceUpdater\Grid\Definition\Factory;
 
@@ -13,7 +31,6 @@ use PrestaShop\PrestaShop\Core\Grid\Column\Type\Status\SeverityLevelColumn;
 use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFactory;
 use PrestaShop\PrestaShop\Core\Grid\Filter\Filter;
 use PrestaShop\PrestaShop\Core\Grid\Filter\FilterCollection;
-use PrestaShop\PrestaShop\Core\Hook\HookDispatcherInterface;
 use PrestaShopBundle\Form\Admin\Type\DateRangeType;
 use PrestaShopBundle\Form\Admin\Type\SearchAndResetType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -21,7 +38,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class PriceImportLogDefinitionFactory extends AbstractGridDefinitionFactory
 {
-
     const GRID_ID = 'priceimportlog';
 
     protected function getId()
@@ -40,7 +56,7 @@ final class PriceImportLogDefinitionFactory extends AbstractGridDefinitionFactor
             ->add((new DataColumn('id_price_import'))
                     ->setName($this->trans('ID', [], 'Admin.Global'))
                     ->setOptions([
-                        'field' => 'id_price_import'
+                        'field' => 'id_price_import',
                     ])
             )
             ->add((new LinkColumn('file'))
@@ -55,19 +71,19 @@ final class PriceImportLogDefinitionFactory extends AbstractGridDefinitionFactor
             ->add((new SeverityLevelColumn('status'))
                     ->setName($this->trans('Status', [], 'Admin.Global'))
                     ->setOptions([
-                        'field' => 'status'
+                        'field' => 'status',
                     ])
             )
             ->add((new DateTimeColumn('date_add'))
                     ->setName($this->trans('Date', [], 'Admin.Global'))
                     ->setOptions([
-                        'field' => 'date_add'
+                        'field' => 'date_add',
                     ])
             )
             ->add((new ActionColumn('actions'))
                     ->setName($this->trans('Actions', [], 'Admin.Global'))
                     ->setOptions([
-                        'actions' => $this->getRowActions()
+                        'actions' => $this->getRowActions(),
                     ])
             );
     }

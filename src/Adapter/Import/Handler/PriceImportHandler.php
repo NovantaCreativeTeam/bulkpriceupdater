@@ -1,16 +1,30 @@
 <?php
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
 
 namespace Novanta\BulkPriceUpdater\Adapter\Import\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Novanta\BulkPriceUpdater\Entity\PriceImportLog;
-use NumberFormatter;
-use ObjectModel;
 use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Adapter\Database;
 use PrestaShop\PrestaShop\Adapter\Entity\Combination;
-use PrestaShop\PrestaShop\Adapter\Entity\Db;
-use PrestaShop\PrestaShop\Adapter\Entity\PrestaShopException;
 use PrestaShop\PrestaShop\Adapter\Entity\Product;
 use PrestaShop\PrestaShop\Adapter\Import\Handler\AbstractImportHandler;
 use PrestaShop\PrestaShop\Adapter\Import\ImportDataFormatter;
@@ -19,13 +33,10 @@ use PrestaShop\PrestaShop\Adapter\Product\Repository\ProductRepository;
 use PrestaShop\PrestaShop\Adapter\Validate;
 use PrestaShop\PrestaShop\Core\Cache\Clearer\CacheClearerInterface;
 use PrestaShop\PrestaShop\Core\Domain\Product\Combination\Exception\CannotUpdateCombinationException;
-use PrestaShop\PrestaShop\Core\Domain\Product\Combination\Exception\CombinationNotFoundException;
 use PrestaShop\PrestaShop\Core\Domain\Product\Combination\ValueObject\CombinationId;
 use PrestaShop\PrestaShop\Core\Domain\Product\Exception\CannotUpdateProductException;
-use PrestaShop\PrestaShop\Core\Domain\Product\Exception\ProductConstraintException;
 use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductId;
 use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductType;
-use PrestaShop\PrestaShop\Core\Exception\CoreException;
 use PrestaShop\PrestaShop\Core\Import\Configuration\ImportConfigInterface;
 use PrestaShop\PrestaShop\Core\Import\Configuration\ImportRuntimeConfigInterface;
 use PrestaShop\PrestaShop\Core\Import\Exception\InvalidDataRowException;
@@ -34,8 +45,8 @@ use PrestaShop\PrestaShop\Core\Import\File\DataRow\DataRowInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class PriceImportHandler extends AbstractImportHandler {
-    
+class PriceImportHandler extends AbstractImportHandler
+{
     protected $entityManager;
     protected $productRepository;
     protected $combinationRepository;
@@ -58,8 +69,7 @@ class PriceImportHandler extends AbstractImportHandler {
         EntityManagerInterface $entityManager,
         ProductRepository $productRepository,
         CombinationRepository $combinationRepository
-    )
-    {
+    ) {
         parent::__construct(
             $dataFormatter,
             $allShopIds,
@@ -81,30 +91,30 @@ class PriceImportHandler extends AbstractImportHandler {
         $this->combinationRepository = $combinationRepository;
         $this->productsToRealign = [];
     }
-    
+
     public function importRow(
-        ImportConfigInterface $importConfig, 
-        ImportRuntimeConfigInterface $runtimeConfig, 
+        ImportConfigInterface $importConfig,
+        ImportRuntimeConfigInterface $runtimeConfig,
         DataRowInterface $dataRow)
     {
         parent::importRow($importConfig, $runtimeConfig, $dataRow);
-        
-        /** @var ObjectModel $entity */
+
+        /** @var \ObjectModel $entity */
         $entity = $this->getEntity($dataRow, $runtimeConfig);
 
-        if($entity && $entity->id) {
-            //$entityFields = $runtimeConfig->getEntityFields();
+        if ($entity && $entity->id) {
+            // $entityFields = $runtimeConfig->getEntityFields();
 
             // Carico solo il prezzo, non devo modificare nessun altro dato
             // $this->fillEntityData($entity, $entityFields, $dataRow, $this->languageId);
             $entity->price_tex = $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'price_tex');
             $entity->price_tex = $this->parsePrice($entity->price_tex);
 
-            if(\is_a($entity, Product::class)) {
+            if (\is_a($entity, Product::class)) {
                 $this->loadPrice($entity);
             }
 
-            if(\is_a($entity, Combination::class)) {
+            if (\is_a($entity, Combination::class)) {
                 $this->loadImpactOnPrice($entity);
             }
 
@@ -113,14 +123,14 @@ class PriceImportHandler extends AbstractImportHandler {
             $langFieldsError = $entity->validateFieldsLang($unfriendlyError, true);
             $isValid = true === $fieldsError && true === $langFieldsError;
 
-            if($isValid && !$runtimeConfig->shouldValidateData()) {
+            if ($isValid && !$runtimeConfig->shouldValidateData()) {
                 $entity->update();
-                if(is_a($entity, Product::class) && $entity->product_type == ProductType::TYPE_COMBINATIONS && !in_array($entity->id, $this->productsToRealign)) {
+                if (is_a($entity, Product::class) && $entity->product_type == ProductType::TYPE_COMBINATIONS && !in_array($entity->id, $this->productsToRealign)) {
                     $this->productsToRealign[] = $entity->id;
-                } else if (is_a($entity, Combination::class) && !in_array($entity->id_product, $this->productsToRealign)) {
+                } elseif (is_a($entity, Combination::class) && !in_array($entity->id_product, $this->productsToRealign)) {
                     $this->productsToRealign[] = $entity->id_product;
                 }
-            } else if (!$isValid) {
+            } elseif (!$isValid) {
                 $error = true !== $fieldsError ? $fieldsError : '';
                 $error .= true !== $langFieldsError ? $langFieldsError : '';
 
@@ -129,7 +139,8 @@ class PriceImportHandler extends AbstractImportHandler {
         }
     }
 
-    public function supports($importEntityType) {
+    public function supports($importEntityType)
+    {
         return $importEntityType === 'price';
     }
 
@@ -138,50 +149,51 @@ class PriceImportHandler extends AbstractImportHandler {
      * può essere di tipo Product o combiantion
      *
      * @param DataRowInterface $dataRow
-     * @return ObjectModel
+     *
+     * @return \ObjectModel
      */
     private function getEntity($dataRow, $runtimeConfig)
     {
         $entity = null;
         $productId = $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id');
         $productAttributeId = $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id_product_attribute');
-        
-        if($productAttributeId) {
+
+        if ($productAttributeId) {
             $combination = new Combination($productAttributeId, $this->languageId, $this->currentContextShopId);
-            if(!$combination->id) {
-                $this->error($this->translator->trans('Combination %1$s (ID: %2$s) cannot be saved: Combination do not exists', 
+            if (!$combination->id) {
+                $this->error($this->translator->trans('Combination %1$s (ID: %2$s) cannot be saved: Combination do not exists',
                     [
-                        $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name'), 
-                        $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id_product_attribute')
-                    ], 
+                        $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name'),
+                        $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id_product_attribute'),
+                    ],
                     'Modules.Bulkpriceupdater.Notification'));
                 throw new InvalidDataRowException();
             }
 
-            if($combination->id_product != $productId) {
+            if ($combination->id_product != $productId) {
                 $this->error($this->translator->trans('Combination %1$s (ID: %2$s) cannot be saved: Combination is linked to product with ID: (%3$s) and not with (%4$s)', [
-                    $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name') . $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'combination'), 
+                    $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name') . $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'combination'),
                     $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id_product_attribute'),
                     $combination->id_product,
-                    $productId
-                ], 
-                'Modules.Bulkpriceupdater.Notification'));
+                    $productId,
+                ],
+                    'Modules.Bulkpriceupdater.Notification'));
                 throw new InvalidDataRowException();
             }
 
             $entity = $combination;
-        } else if($productId) {
+        } elseif ($productId) {
             $entity = new Product($productId);
-            if(!$entity->id) {
+            if (!$entity->id) {
                 $this->error($this->translator->trans('%1$s (ID: %2$s) cannot be saved: Product doesn\'t exists', [
-                    $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name'), 
+                    $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'name'),
                     $this->fetchDataValueByKey($dataRow, $runtimeConfig->getEntityFields(), 'id'),
-                ], 
-                'Modules.Bulkpriceupdater.Notification')); 
+                ],
+                    'Modules.Bulkpriceupdater.Notification'));
                 throw new InvalidDataRowException();
             }
         } else {
-            $this->error($this->translator->trans('At least one of id or id_product_attribute must be specified for ', [], 'Modules.Bulkpriceupdater.Notification')); 
+            $this->error($this->translator->trans('At least one of id or id_product_attribute must be specified for ', [], 'Modules.Bulkpriceupdater.Notification'));
             throw new SkippedIterationException();
         }
 
@@ -208,8 +220,9 @@ class PriceImportHandler extends AbstractImportHandler {
         }
     }
 
-    private function loadImpactOnPrice(Combination $combination) {
-        if(ObjectModel::existsInDatabase($combination->id_product, 'product')) {
+    private function loadImpactOnPrice(Combination $combination)
+    {
+        if (\ObjectModel::existsInDatabase($combination->id_product, 'product')) {
             $product = new Product($combination->id_product);
 
             if (isset($combination->price_tex) && !isset($combination->price_tin)) {
@@ -224,15 +237,15 @@ class PriceImportHandler extends AbstractImportHandler {
                 $combination->price = $combination->price_tex;
             }
 
-            $combination->price =  $combination->price - (float) $product->price;
+            $combination->price = $combination->price - (float) $product->price;
         } else {
             throw new InvalidDataRowException();
         }
     }
-    
+
     public function tearDown(ImportConfigInterface $importConfig, ImportRuntimeConfigInterface $runtimeConfig)
     {
-        //parent::tearDown($importConfig, $runtimeConfig);
+        // parent::tearDown($importConfig, $runtimeConfig);
         if ($runtimeConfig->isFinished() && !$runtimeConfig->shouldValidateData()) {
             $this->addPriceImportLog($importConfig);
             $this->realignProductPrices($this->productsToRealign);
@@ -243,11 +256,12 @@ class PriceImportHandler extends AbstractImportHandler {
      * Function that add a new import Log
      *
      * @param ImportConfigInterface $importConfig
+     *
      * @return void
      */
     private function addPriceImportLog($importConfig)
-    {        
-        if(!empty($this->getErrors())) {
+    {
+        if (!empty($this->getErrors())) {
             $status = 0;
         } elseif (!empty($this->getWarnings())) {
             $status = 2;
@@ -266,11 +280,12 @@ class PriceImportHandler extends AbstractImportHandler {
         $this->entityManager->flush();
     }
 
-
     /**
      * Function that realign base price according to combinations
      * Combination with the lowest price should be 0
+     *
      * @param array $productsToRealing
+     *
      * @return void
      */
     private function realignProductPrices(array $productsToRealing): void
@@ -296,25 +311,27 @@ class PriceImportHandler extends AbstractImportHandler {
 
                 // 3. Decrease the combination price of (combination_price - product_price)
                 foreach ($combinations as $combination) {
-                    $combinationToRealign = $this->combinationRepository->get(new CombinationId((int)$combination['id_product_attribute']));
+                    $combinationToRealign = $this->combinationRepository->get(new CombinationId((int) $combination['id_product_attribute']));
                     $combinationToRealign->price = $combinationToRealign->price - $priceDifference;
                     $this->combinationRepository->partialUpdate($combinationToRealign, ['price'], CannotUpdateCombinationException::FAILED_UPDATE_PRICES);
                 }
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $this->error($this->translator->trans('Unable to realign prices for product %s: %s. Please revert import or re-run import', [$productId, $e->getMessage()], 'Modules.Bulkpriceupdater.Notification'));
             }
         }
     }
+
     /**
      * Undocumented function
      *
      * @param string $price
+     *
      * @return void
      */
     private function parsePrice($price)
     {
-        $priceParsed = (new NumberFormatter($this->translator->getLocale(), NumberFormatter::DECIMAL))->parse($price);
+        $priceParsed = (new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::DECIMAL))->parse($price);
+
         return $priceParsed ? $priceParsed : $price;
     }
 }

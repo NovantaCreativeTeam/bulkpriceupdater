@@ -1,4 +1,22 @@
 <?php
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
 
 namespace Novanta\BulkPriceUpdater\Adapter\Product\QueryHandler;
 
@@ -8,23 +26,22 @@ use Novanta\BulkPriceUpdater\Domain\Product\Query\GetProductsForBulkPriceUpdate;
 use Novanta\BulkPriceUpdater\Domain\Product\QueryHandler\GetProductsForBulkPriceUpdateHandlerInterface;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 
-class GetProductsForBulkPriceUpdateHandler implements GetProductsForBulkPriceUpdateHandlerInterface {
-    
+class GetProductsForBulkPriceUpdateHandler implements GetProductsForBulkPriceUpdateHandlerInterface
+{
     private $connection;
     private $databasePrefix;
     private $context;
-    
-    public function __construct (
+
+    public function __construct(
         Connection $connection,
         $databasePrefix,
         LegacyContext $context
-    )
-    {
+    ) {
         $this->connection = $connection;
         $this->databasePrefix = $databasePrefix;
         $this->context = $context;
     }
-    
+
     public function handle(GetProductsForBulkPriceUpdate $query)
     {
         // 0. Recupero i filtri
@@ -55,15 +72,15 @@ class GetProductsForBulkPriceUpdateHandler implements GetProductsForBulkPriceUpd
             ->leftJoin('p', $this->databasePrefix . 'product_supplier', 'ps', 'p.id_product = ps.id_product and IFNULL(pa.id_product_attribute, 0) = ps.id_product_attribute')
             ->groupBy('p.id_product, pa.id_product_attribute');
 
-        if(\array_key_exists('id_supplier', $filters) && !empty($filters['id_supplier'])) {
+        if (\array_key_exists('id_supplier', $filters) && !empty($filters['id_supplier'])) {
             $queryBuilder->andWhere($queryBuilder->expr()->in('ps.id_supplier', $filters['id_supplier']));
         }
 
-        if(\array_key_exists('id_category', $filters) && !empty($filters['id_category'])) {
+        if (\array_key_exists('id_category', $filters) && !empty($filters['id_category'])) {
             $queryBuilder->andWhere($queryBuilder->expr()->in('cp.id_category', $filters['id_category']));
         }
 
-        if(\array_key_exists('only_active', $filters) && $filters['only_active']) {
+        if (\array_key_exists('only_active', $filters) && $filters['only_active']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('p.active', 1));
         }
 

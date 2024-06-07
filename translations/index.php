@@ -1,4 +1,5 @@
-{#**
+<?php
+/**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
  *
@@ -15,14 +16,13 @@
  * @author    PrestaShop SA and Contributors <contact@prestashop.com>
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
- *#}
-{% extends '@PrestaShop/Admin/layout.html.twig' %}
+ */
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 
-{% block content %}
-    {% include "@Modules/bulkpriceupdater/views/templates/admin/export/block/export_form.html.twig" %}
-{% endblock %}
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('../modules/bulkpriceupdater/views/js/bulkpriceupdater.export.min.js') }}"></script>
-{% endblock %}
+header('Location: ../');
+exit;
