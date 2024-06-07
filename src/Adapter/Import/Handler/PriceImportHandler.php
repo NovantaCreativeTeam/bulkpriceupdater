@@ -3,7 +3,6 @@
 namespace Novanta\BulkPriceUpdater\Adapter\Import\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Matrix\Exception;
 use Novanta\BulkPriceUpdater\Entity\PriceImportLog;
 use NumberFormatter;
 use ObjectModel;
@@ -40,7 +39,7 @@ class PriceImportHandler extends AbstractImportHandler {
     protected $entityManager;
     protected $productRepository;
     protected $combinationRepository;
-    private array $productsToRealign;
+    private $productsToRealign;
 
     public function __construct(
         ImportDataFormatter $dataFormatter,
