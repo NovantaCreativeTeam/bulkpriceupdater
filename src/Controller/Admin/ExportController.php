@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Controller\Admin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Novanta\BulkPriceUpdater\Domain\Product\Query\GetProductsForBulkPriceUpdate;
 use Novanta\BulkPriceUpdater\Form\Admin\Export\ExportType;
 use PrestaShopBundle\Component\CsvResponse;

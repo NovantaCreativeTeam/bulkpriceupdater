@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Controller\Admin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Doctrine\ORM\EntityRepository;
 use Novanta\BulkPriceUpdater\Entity\PriceImportLog;
 use Novanta\BulkPriceUpdater\Form\Admin\Import\ImportType;

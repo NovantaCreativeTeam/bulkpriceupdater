@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Domain\Product\Query;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class GetProductsForBulkPriceUpdate
 {
     private $filters;

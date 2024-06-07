@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Controller\Admin\Configure;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
 

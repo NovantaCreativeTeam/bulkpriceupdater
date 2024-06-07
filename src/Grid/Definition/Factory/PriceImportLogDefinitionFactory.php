@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Grid\Definition\Factory;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Novanta\BulkPriceUpdater\Grid\Action\Row\RevertRowAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\RowActionCollection;
 use PrestaShop\PrestaShop\Core\Grid\Column\ColumnCollection;

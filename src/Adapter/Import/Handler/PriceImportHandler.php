@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Adapter\Import\Handler;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Doctrine\ORM\EntityManagerInterface;
 use Novanta\BulkPriceUpdater\Entity\PriceImportLog;
 use PrestaShop\PrestaShop\Adapter\Configuration;

@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Form\Admin\Export;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Novanta\BulkPriceUpdater\Form\ChoiceProvider\SupplierByIdChoiceProvider;
 use PrestaShop\PrestaShop\Adapter\Category\CategoryDataProvider;
 use PrestaShopBundle\Form\Admin\Type\CategoryChoiceTreeType;

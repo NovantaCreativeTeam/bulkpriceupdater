@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Form\Admin\Import;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShop\PrestaShop\Core\Import\ImportSettings;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;

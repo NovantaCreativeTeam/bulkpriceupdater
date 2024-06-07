@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Domain\Product\QueryHandler;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Novanta\BulkPriceUpdater\Domain\Product\Query\GetProductsForBulkPriceUpdate;
 
 interface GetProductsForBulkPriceUpdateHandlerInterface

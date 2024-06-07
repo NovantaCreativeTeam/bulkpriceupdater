@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Adapter\Product\QueryHandler;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Novanta\BulkPriceUpdater\Domain\Product\Query\GetProductsForBulkPriceUpdate;

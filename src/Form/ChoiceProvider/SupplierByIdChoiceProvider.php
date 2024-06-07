@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Form\ChoiceProvider;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShop\PrestaShop\Adapter\Supplier\SupplierDataProvider;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 

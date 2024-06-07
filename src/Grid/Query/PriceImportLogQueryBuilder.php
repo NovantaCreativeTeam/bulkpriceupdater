@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Grid\Query;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Doctrine\DBAL\Connection;
 use PrestaShop\PrestaShop\Core\Grid\Query\AbstractDoctrineQueryBuilder;
 use PrestaShop\PrestaShop\Core\Grid\Query\DoctrineSearchCriteriaApplicator;

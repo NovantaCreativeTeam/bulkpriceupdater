@@ -20,6 +20,10 @@
 
 namespace Novanta\BulkPriceUpdater\Search\Filters;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Novanta\BulkPriceUpdater\Grid\Definition\Factory\PriceImportLogDefinitionFactory;
 use PrestaShop\PrestaShop\Core\Search\Filters;
 
