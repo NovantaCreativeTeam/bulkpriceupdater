@@ -41,6 +41,8 @@ use PrestaShop\PrestaShop\Core\Domain\Product\Combination\ValueObject\Combinatio
 use PrestaShop\PrestaShop\Core\Domain\Product\Exception\CannotUpdateProductException;
 use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductId;
 use PrestaShop\PrestaShop\Core\Domain\Product\ValueObject\ProductType;
+use PrestaShop\PrestaShop\Core\Domain\Shop\ValueObject\ShopConstraint;
+use PrestaShop\PrestaShop\Core\Domain\Shop\ValueObject\ShopId;
 use PrestaShop\PrestaShop\Core\Import\Configuration\ImportConfigInterface;
 use PrestaShop\PrestaShop\Core\Import\Configuration\ImportRuntimeConfigInterface;
 use PrestaShop\PrestaShop\Core\Import\Exception\InvalidDataRowException;
@@ -308,16 +310,16 @@ class PriceImportHandler extends AbstractImportHandler
 
             try {
                 // 2. Increase the product price of (combination_price - product_price)
-                $productToRealign = $this->productRepository->get(new ProductId((int) $productId));
+                $productToRealign = $this->productRepository->get(new ProductId((int) $productId), new ShopId($this->currentContextShopId));
                 $priceDifference = (float) $cheapCombination['price'];
                 $productToRealign->price = $productToRealign->price + $priceDifference;
-                $this->productRepository->partialUpdate($productToRealign, ['price'], CannotUpdateProductException::FAILED_UPDATE_PRICES);
+                $this->productRepository->partialUpdate($productToRealign, ['price'], ShopConstraint::shop($this->currentContextShopId), CannotUpdateProductException::FAILED_UPDATE_PRICES);
 
                 // 3. Decrease the combination price of (combination_price - product_price)
                 foreach ($combinations as $combination) {
-                    $combinationToRealign = $this->combinationRepository->get(new CombinationId((int) $combination['id_product_attribute']));
+                    $combinationToRealign = $this->combinationRepository->get(new CombinationId((int) $combination['id_product_attribute']), new ShopId($this->currentContextShopId));
                     $combinationToRealign->price = $combinationToRealign->price - $priceDifference;
-                    $this->combinationRepository->partialUpdate($combinationToRealign, ['price'], CannotUpdateCombinationException::FAILED_UPDATE_PRICES);
+                    $this->combinationRepository->partialUpdate($combinationToRealign, ['price'], ShopConstraint::shop($this->currentContextShopId), CannotUpdateCombinationException::FAILED_UPDATE_PRICES);
                 }
             } catch (\Exception $e) {
                 $this->error($this->translator->trans('Unable to realign prices for product %s: %s. Please revert import or re-run import', [$productId, $e->getMessage()], 'Modules.Bulkpriceupdater.Notification'));

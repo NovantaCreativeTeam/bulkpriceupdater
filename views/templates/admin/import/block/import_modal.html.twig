@@ -19,7 +19,7 @@
 
 {% trans_default_domain 'Modules.Bulkpriceupdater.Notification' %}
 
-{% embed 'PrestaShopBundle:Admin/Helpers:bootstrap_popup.html.twig' with {
+{% embed '@PrestaShop/Admin/Helpers/bootstrap_popup.html.twig' with {
   'id': 'import_progress_modal',
   'title': 'Importing your data...'|trans,
   'closable': false,

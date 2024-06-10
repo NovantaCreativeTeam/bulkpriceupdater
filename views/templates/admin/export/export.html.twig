@@ -19,7 +19,9 @@
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 
 {% block content %}
-    {% include "@Modules/bulkpriceupdater/views/templates/admin/export/block/export_form.html.twig" %}
+    {{ include("@Modules/bulkpriceupdater/views/templates/admin/export/block/export_form.html.twig", {
+        'export_form': export_form
+    }) }}
 {% endblock %}
 
 {% block javascripts %}

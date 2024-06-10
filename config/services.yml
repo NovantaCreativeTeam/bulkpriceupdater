@@ -8,7 +8,7 @@ services:
       - '@translator'
       - '@prestashop.adapter.data_provider.category'
       - '@novanta.bulkpriceupdater.form.choice_provider.supplier_by_id'
-      - "@=service('prestashop.adapter.legacy.context').getContext().language.id"
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().language.id'
     tags:
       - { name: form.type }
 
@@ -23,14 +23,14 @@ services:
     class: 'Novanta\BulkPriceUpdater\Form\ChoiceProvider\SupplierByIdChoiceProvider'
     arguments:
       - '@prestashop.adapter.data_provider.supplier'
-      - "@=service('prestashop.adapter.legacy.context').getContext().language.id"
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().language.id'
 
   novanta.bulkpriceupdater.adapter.product.query_handler.get_products_for_bulk_price_update_handler:
     class: 'Novanta\BulkPriceUpdater\Adapter\Product\QueryHandler\GetProductsForBulkPriceUpdateHandler'
     arguments:
       - '@doctrine.dbal.default_connection'
       - '%database_prefix%'
-      - '@prestashop.adapter.legacy.context'
+      - '@PrestaShop\PrestaShop\Adapter\LegacyContext'
     tags:
       - name: tactician.handler
         command: Novanta\BulkPriceUpdater\Domain\Product\Query\GetProductsForBulkPriceUpdate
@@ -41,19 +41,19 @@ services:
       - '@prestashop.adapter.import.data_formatter'
       - '@=service("prestashop.adapter.shop.context").getAllShopIds()'
       - '@=service("prestashop.adapter.shop.context").getContextListShopID()'
-      - '@=service("prestashop.adapter.legacy.context").getContext().shop.id'
-      - '@=service("prestashop.adapter.feature.multistore").isUsed()'
-      - '@=service("prestashop.adapter.legacy.context").getContext().language.id'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().shop.id'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\Feature\\MultistoreFeature").isUsed()'
+      - '@=service("PrestaShop\\PrestaShop\\Adapter\\LegacyContext").getContext().language.id'
       - '@translator'
       - '@prestashop.adapter.legacy.logger'
       - '@=service("prestashop.adapter.data_provider.employee").getId()'
       - '@prestashop.adapter.database'
       - '@prestashop.adapter.cache.clearer.smarty_cache_clearer'
-      - '@prestashop.adapter.legacy.configuration'
+      - '@PrestaShop\PrestaShop\Adapter\Configuration'
       - '@prestashop.adapter.validate'
       - '@doctrine.orm.entity_manager'
-      - '@prestashop.adapter.product.repository.product_repository'
-      - '@prestashop.adapter.product.combination.repository.combination_repository'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Repository\ProductRepository'
+      - '@PrestaShop\PrestaShop\Adapter\Product\Combination\Repository\CombinationRepository'
 
 
   # Grid Price Import Log
@@ -75,7 +75,7 @@ services:
     class: 'PrestaShop\PrestaShop\Core\Grid\Data\Factory\DoctrineGridDataFactory'
     arguments:
       - '@novanta.bulkpriceupdater.grid.query.priceimportlog_query_builder'
-      - '@prestashop.core.hook.dispatcher'
+      - '@PrestaShop\PrestaShop\Core\Hook\HookDispatcher'
       - '@prestashop.core.grid.query.doctrine_query_parser'
       - 'priceimportlog'
 
@@ -85,7 +85,7 @@ services:
       - '@novanta.bulkpriceupdater.grid.definition.factory.priceimportlog'
       - '@novanta.bulkpriceupdater.grid.data.factory.priceimportlog_data_factory'
       - '@prestashop.core.grid.filter.form_factory'
-      - '@prestashop.core.hook.dispatcher'
+      - '@PrestaShop\PrestaShop\Core\Hook\HookDispatcher'
 
   
 
