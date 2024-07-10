@@ -35,7 +35,7 @@ class BulkPriceUpdater extends Module
     {
         $this->name = 'bulkpriceupdater';
         $this->tab = 'pricing_promotion';
-        $this->version = '1.0.2';
+        $this->version = '2.0.0';
         $this->author = 'Novanta';
         $this->need_instance = 0;
 
